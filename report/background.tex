@@ -1,0 +1,42 @@
+\subsection{Background \& Tools}
+
+\subsubsection{LQR Control Problem}
+The Linear Quadratic Regulator problem is an optimal control problem concerning dynamic systems with linear dynamics and quadratic cost functions. The objective is to find the optimal control u that minimizes the cost J \cite{liberzon2012calculus}. 
+
+\begin{itemize}
+	\item A linear time-varying system:
+			$$\dot{x} = A(t)x + B(t)u, \; x(t_0) = x_0, \;
+			x \in \mathbb{R}^n, \; u \in \mathbb{R}^m$$
+			
+	\item Quadratic cost function:
+			$$J(x, u, t) = \int_{t_0}^{t_f}(x^T(t)Qx(t) + u^T(t)Ru(t))dt + x^T(t_f)Q_fx(t_f),$$
+			
+			$$Q=Q^T \geq 0, \; Q_f=Q_f^T \geq 0, \; R=R^T > 0$$
+			
+	The running cost's matrices Q and R penalize the size of the state and the control effort respectively.
+\end{itemize} 
+
+\noindent We derive the necessary conditions for the minimization of J by applying Pontryagin's Maximum Principle. This yields that the optimal control is a linear state feedback law of the form:
+
+$$u^{*}(t) = -R^{-1}(t)B^T(t)P(t)x^*(t)$$
+
+\noindent where $P$ must be a solution of the matrix differential equation (Riccati differential equation (RDE)):
+
+$$\dot{P}(t) = -P(t)A(t) - A^T(t)P(t)-Q(t) + P(t)B(t)R^{-1}(t)B^T(t)P(t), \; P(t_f) = Q_f$$ 
+
+\noindent A special case of the LQR problem described above is the infinite-horizon LQR problem. Now, we assume that A, B, Q and R are constant (transient phenomena have subsided) and as $t_f \rightarrow \infty$ the terminal cost becomes negligible, thus $Q_f = 0$. So, the dynamics of the control system become time-invariant and the cost function becomes $J(x, u, t) = \int_{t_0}^{\infty}(x^T(t)Qx(t) + u^T(t)Ru(t))dt$. The optimal solution is given by:
+
+\begin{enumerate}
+	\item $u^{*}(t) = -R^{-1}B^TPx^{*}(t)$
+	
+	\item The limit $P = \lim_{t_f \rightarrow \infty}P(t_0, t_f)$ of the solution of the RDE is a constant matrix that satisfies the Algebraic Riccati Equation (ARE): 
+			$$PA + A^TP + Q - PBR^{-1}B^TP = 0$$
+			
+	\item The optimal cost is: $J(u^{*}) = x_0^T P x_0$
+	
+	\item The closed-loop system $\dot{x}^{*} = (A-BR^{-1}B^TP)x^{*}$ is exponentially stable, as long as the couple $(A, \sqrt{Q})$ is detectable.
+\end{enumerate}
+
+\noindent The theoretical foundation of the LQR problem is necessary for the understanding of dynamic environments featuring multiple agents. In classical optimal control, our objective is to minimize a unique cost function. In contrast, in multi-player games, the optimization process is coupled. Actions of one agent influence the perfrormance and the state of the others. This transforms the Riccati equation to a system of coupled Riccati equations. Their solutions lead to a Nash equilibrium point, not a minimum. This framework is the basis of the iLQG algorithm which utilizes LQR iteratively by approximating non-linear dynamics as LQ problems.  
+
+\subsubsection{Games}

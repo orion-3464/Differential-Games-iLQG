@@ -5,6 +5,8 @@
 \usepackage{xltxtra}
 \usepackage[greek,english]{babel}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
 
 \setmainfont{FreeSerif} 
 \setmonofont{FreeMono}
@@ -82,6 +84,7 @@
 
 \usepackage[colorlinks=true, linkcolor=ModernPurple, urlcolor=ModernPurple, citecolor=ModernPurple]{hyperref}
 
+
 \begin{document}
 	
 	\maketitle 
@@ -96,5 +99,8 @@
 	\newpage
 	
 	\section{Introduction}
+	\input{background}
 	
+	\bibliographystyle{plain}
+	\bibliography{references}
 \end{document}
