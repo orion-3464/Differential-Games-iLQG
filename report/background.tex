@@ -116,4 +116,58 @@ $$J_i(u_1^{*}, ..., u_{i-1}^{*}, u_i, u_{i+1}^{*}, ..., u_N^{*}) \geq J_i(u_1^{*
 \noindent Table \ref{tab:prisoner} is the famous game Prisoner's Dilemma in bi-matrix form. Here, the cost functions correspond to years in prison for each player ()$P_1$ and $P_2$). The only Nash equilibrium solution is $(u_1, u_2) = (\text{Betray}, \text{Betray})$. But, it is not optimal in the sense that $(u_1, u_2) = (\text{Not Betray}, \text{Not Betray})$ yields a better result for both players. This illustrates the possibility of mutual interest in nonzero-sum games. A solution produced by the coalition of all the players is called \text{pareto-optimal} solution \cite{Starr1969NonzerosumDG}. \\
 \noindent In addition, in nonzero-sum games, every Nash equilibrium strategy is not equivalent to every other (cost-wise). \\
 
-\noindent While the preceding discussion of matrix and nonzero-sum games provides a foundational understanding of strategic interaction in discrete-time, finite-action settings, many real-world problems involve dynamics, continuous time, and evolving states. To model strategic decision-making in such contexts—where players’ actions influence not only immediate payoffs but also future states and opportunities—we extend the framework to differential games. These games generalize optimal control theory to multi-agent settings, incorporating differential equations to describe state evolution and enabling the analysis of continuous-time strategic behavior over a horizon. In what follows, we introduce the core formulation of differential games, including dynamics, cost functionals, information structures, and solution concepts such as open-loop and feedback Nash equilibria 
+\noindent While the preceding discussion of zero-sum and nonzero-sum games provides a foundational understanding of strategic interaction in discrete-time, finite-action settings, many real-world problems involve dynamics, continuous time, and evolving states. To model strategic decision-making in such contexts—where players’ actions influence not only immediate payoffs but also future states and opportunities—we extend the framework to differential games. These games generalize optimal control theory to multi-agent settings, incorporating differential equations to describe state evolution and enabling the analysis of continuous-time strategic behavior over a horizon. In what follows, we introduce the core formulation of differential games, including dynamics, cost functionals, information structures, and solution concepts such as open-loop and feedback Nash equilibria. \\
+
+\noindent \textbf{General Differential Games} \\
+
+\noindent In General Differential Games \cite{Starr1969NonzerosumDG}, the formulation resembles that of classical optimal control problems. I a nonzero-sum, N-player differential game, each player $i$ seeks to select a strategy (control) $u_i$ so as to minimize an individual cost function of the form:
+
+$$J_i = K_i(x(t_f), t_f) + \int_{0}^{t_f}L_i(x, u_1, ..., u_N)dt$$
+
+\noindent The optimization's constraints are defined by the game's dynamics:
+
+$$\dot{x} = f(x, u_1, ..., u_N, t), \; x(t_0) = x_0$$
+
+\noindent Such a problem may include holonomic and inequality constraints on the state $x$ and controls $u_i$.
+
+\noindent The players' strategies interact through both the dynamics and the cost functionals, leading to a strategic dynamic optimization problem. \\
+
+\noindent A key distinction from classical optimal control problems is that, in differential games, one must specify the solution concept that characterizes rational strategic interaction among players. Unlike optimal control where a single decision-maker minimizes a cost functional, a differential game requires equilibria such as a Nash equilibrium or outcomes that are Pareto-optimal, depending on whether the setting is non-cooperative or cooperative \cite{Starr1969NonzerosumDG}. Here, it is assumed that every player knows the value of the state vector, the system parameters and its cost functions, but not the rival players' strategies. \\
+
+\noindent This project is about a special class of differential games where the system is linear and the cost functions are quadratic. These are known as Linear Quadratic Games. Due to their structural simplicity, LQ games often admit closed-form or numerically efficient solutions, while still capturing fundamental trade-offs such as control effort versus state regulation and strategic interaction among players. \\
+
+\noindent \textbf{Linear Quadratic Games} \\
+
+\noindent The cost function of each player $i$ is of the form:
+
+$$J_i = \frac{1}{2}(x^TS_{if}x)_{t=t_f} + \frac{1}{2}\int_{t_0}^{t_f}(x^TQx+\sum_{j=1}^{N}u_j^TR_{ij}u_j)dt$$ 
+
+\noindent Player $i$ should choose a control strategy $u_i = \Psi_i(x, t)$ to minimize that cost function subject to the constraints imposed by the system's dynamics:
+
+$$\dot{x} = Ax + \sum_{j=1}^{N}B_ju_j$$ 
+
+\begin{itemize}
+	\item \textit{Nash Equilibrium Solutions:} This type of solution is secure against arbitrary and attempts by single players to unilaterally alter their strategy. The reason lies withing Nash Equilibrium definition. One can observe that a player can only lose by deviating from his control strategy. Thus, those solutions are particularly interesting in games where cooperation is impossible or difficult to enforce.
+	
+	For our LQ game, the terminal and running cost for each player $i$ are:
+	
+	$$K_i(x(t_f), t_f) = \frac{1}{2}(x^TS_{if}x)_{t=t_f}$$
+	
+	$$L_i(x, u_1, ..., u_N) = x^TQx + \sum_{j=1}^{N}u_j^TR_{ij}u_j$$
+	
+	One can obtain the necessary conditions for a Nash equilibrium solution by applying Pontryagin's maximum principle. Those are listed in \cite{Starr1969NonzerosumDG}:
+	
+	\begin{enumerate}
+		\item $\dot{x} = f(x, u_1, ..., u_N, t), \; x(t_0) = x_0$
+		
+		\item $\dot{\lambda}_i^T = -\frac{\partial H_i(x, u_1, ..., u_N, t, \lambda_i)}{\partial x} - \sum_{j=1, j\neq i}^{N} \frac{\partial H_i}{\partial u_j} \frac{\partial \Psi_i}{\partial x}(x, t)$
+		
+		\item $\lambda_i^T(x(t_f)) = \frac{\partial K_i(x(t_f), t_f)}{x(t_f)}$
+		
+		\item $u_i = \Psi_i(x, t) = \arg\min\limits_{u_i^{'}} H_i(x, t, \Psi_1, ..., \Psi_{i-1}, u_i^{'}, \Psi_{i+1}, ..., \Psi_N, \lambda_i)$
+	\end{enumerate}
+	
+	The Hamiltonian of each player in an LQ game is:
+	
+	$$H_i$$
+\end{itemize}
