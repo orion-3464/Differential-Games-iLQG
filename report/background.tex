@@ -1,4 +1,4 @@
-\subsection{Background \& Tools} \label{back_tools}
+\subsection{Background} \label{back_tools}
 
 \subsubsection{LQR Control Problem} \label{lqr_problem}
 The Linear Quadratic Regulator problem is an optimal control problem concerning dynamic systems with linear dynamics and quadratic cost functions. The objective is to find the optimal control u that minimizes the cost J \cite{liberzon2012calculus}. 
@@ -169,5 +169,55 @@ $$\dot{x} = Ax + \sum_{j=1}^{N}B_ju_j$$
 	
 	The Hamiltonian of each player in an LQ game is:
 	
-	$$H_i$$
+	$$
+	H_i(x, t, u, \lambda_i^T) = L_i(x, u, t) + \lambda_i^Tf(x, u, t) =
+	x^TQx + \sum_{j=1}^{N}u_j^TR_{ij}u_j + \lambda_i^T \left(Ax + \sum_{j=1}^{N}B_ju_j \right)
+	$$
+	
+	The application of necessary condition 4 yields:
+	
+	$$\frac{\partial H_i}{\partial u_i} = 2R_{ii}u_i + B_i^T\lambda_i$$
+	
+	$$
+	\frac{\partial H_i}{\partial u_i} = 0 \implies 
+	u_i^{*} = -\frac{1}{2}R_{ii}^{-1}B_i^T\lambda_i$$
+	
+	Then, we apply condition 2 and get:
+	
+	$$u_i^{*} = R_{ii}^{-1}B_i^T P_ix$$
+	
+	where $S_i$ is a solution of the coupled Riccati equation:
+	
+	$$
+	\dot{P}_i = -P_i A - A^TP_i - Q_i - \sum_{j=1}^{N}(P_jB_jR_{jj}^{-1}R_{ij}R_{jj}^{-1}B_j^TP_j-P_iB_jR_{jj}^{-1}B_j^TP_j-P_jB_jR_{jj}^{-1}B_j^TP_i)
+	$$
+	
+	$$P_i(t_f) = P_{if}$$
+	
+	For $N=1$, this is the RDE equation that was presented in our LQR Control Problem section (corresponds to 1 player).
+	
+	\item \textit{Minimax Controls:} Paper \cite{Starr1969NonzerosumDG} states that this is the solution of a two-player, zero-sum LQ game where the opponent chooses strategy trying to maximize $J_i$. The minimax control for player $i$ is:
+	
+	$$\bar{u}_i = -R_{ii}^{-1}B_i^T\bar{P}_ix$$
+	
+	where
+	
+	$$\dot{\bar{P}}_i = -\bar{P}_iA-A^T\bar{P}_i-Q_i+\bar{P}_i\sum_{j=1}^{N}B_jR_{ij}^{-1}B_j^T\bar{P}_i, \; R_{ii} > 0, \; R_{ij} < 0, \; j\neq i$$
+	
+	This strategy's goal is to guarantee minimum cost against the worst possible set of strategies the other players can choose. It shall be used when one is not sure if their opponents will play their Nash controls.
+	
+	\newpage
+	
+	\item \textit{Non-inferior Controls:} This type of solutions are preferable if a negotiated solution can be reached and enforced. For LQ games the non-inferior controls are:
+	
+	$$\hat{u}_i(\mu) = -\left[\sum_{j=1}^{N}\mu_jR_{ji}\right]^{-1}B_i^T\hat{P}(\mu)x$$
+	
+	where
+	
+	$$\dot{\hat{P}}(\mu) = -\hat{P}A - A^T\hat{P} - \sum_{j=1}^{N}Q_j + \hat{P} \sum_{i=1}^{N}B_i\left[\sum_{j=1}^{N}\mu_jR_{ji}\right]B_i^T\hat{P}, \; \hat{P}(\mu, t_f) = \sum_{i=1}^{N}\mu_i P_{if}$$
+	
+	$$\sum_{j=1}^{N}\mu_i = 1, \mu_i \geq 0$$
+	
 \end{itemize}
+
+\subsection{The iLQG Algorithm} \label{ilqg_algo}
