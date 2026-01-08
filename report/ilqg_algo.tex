@@ -1,0 +1,22 @@
+\subsection{The iLQG Algorithm} \label{ilqg_algo}
+
+\subsubsection{Problem Formulation}
+
+Based on \cite{fridovichkeil2020} the N-player finite horizon, general-sum differential game we focus on and will experiment with is defined by non-linear dynamics
+
+$$\dot{x} = f(t, x, u_1, ..., u_N)$$
+
+\noindent and cost functionals
+
+$$J_i(u_1, ..., u_N) = \int_{0}^{T}g_i(t, x(t), u_1, ..., u_N)dt$$
+
+\noindent where $x \in \mathbb{R}^n$ is the system state and $u_i \in \mathbb{R}^{m_i}$ is the control input of player $i$. \\
+
+\noindent Our objective is to compute optimal feedback Nash equilibrium strategies $\gamma_i^{*}$, such that no player can reduce their cost $J_i$ by unilaterally deviating from their strategy. 
+
+% Make clear what a strategy is
+
+Finding a global Nash equilibrium in a non-linear system is computationally intractable. Therefore, we adopt the iterative Linear Quadratic (iLQ) approach, which repeatedly constructs local linear-quadratic approximations of the dynamics and costs, enabling efficient numerical solution of the game in the neighborhood of a nominal trajectory.
+
+\subsection{Local Approximation}
+
