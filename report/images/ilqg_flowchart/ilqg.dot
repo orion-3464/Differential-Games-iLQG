@@ -1,8 +1,8 @@
 digraph IterativeLQGames {
     rankdir=TB;
     splines=ortho;
-    nodesep=0.6;
-    ranksep=0.8;
+    nodesep=0.8;
+    ranksep=0.4; 
 
     fontname="Times-Roman";
     node [fontname="Times-Roman", fontsize=11, shape=rectangle];
@@ -31,16 +31,16 @@ digraph IterativeLQGames {
     Output [shape=parallelogram,
             label="Output\n{γᵢᵏ}"];
 
-    Start -> Input -> Loop -> Traj -> Lin 
-    Traj -> Quad
-    Lin -> Solve
+    Start -> Input -> Loop -> Traj -> Lin;
+    Traj -> Quad;
+    Lin -> Solve;
     Quad -> Solve -> Step -> Conv;
 
     Conv -> Loop [label="No"];
-
     Conv -> Output [label="Yes"];
     Output -> End;
 
     { rank=same; Lin; Quad }
+    { rank=same; Solve; Step }
 }
 
