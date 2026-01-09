@@ -1,0 +1,39 @@
+\subsection{Three-player Intersection}
+
+In this section, we are going to reproduce the scenario of three-player intersection as described in \cite{fridovichkeil2020}
+
+\subsubsection{Problem Description}
+
+The scenario consists of 2 cars and a pedestrian that must cross and intersection avoiding collisions. The problem's time horizon is $T=5s$ and the time discretization is $\Delta t = 0.1s$.
+
+\subsubsection{System Dynamics}
+
+The three cars' dynamics are modeled after kinematic bicycle model:
+
+$$
+\dot{p}_{x,i} = v_i \cos(\theta_i), \quad \dot{p}_{y,i} = v_i \sin(\theta_i), \quad \dot{\theta}_i = \frac{v_i \tan(\phi_i)}{L_i}, \quad \dot{\phi}_i = \psi_i, \quad \dot{v}_i = a_i 	
+$$
+
+\noindent where $p_{x,i}, \; p_{y,i}$ are each car's position coordinates, $\theta_i$ is each car's heading angle, $u_i$ the linear velocity and $\phi_i$ the front wheel's steering angle. $L_i$ is the inter-axle distance, and input $u_i = (\psi_i, \alpha_i)$ is the front wheel angular rate and longitudinal acceleration, respectively \\ 
+
+\noindent The pedestrian is modeled after the kinematic unicycle model:
+
+$$
+\dot{p}_x &= v \cos(\theta), \ \dot{p}_y &= v \sin(\theta), \ \dot{\theta} &= \omega, \ \dot{v} &= a 
+$$
+
+\noindent where $p_x, \; p_y$ are the pedestrian's position coordinates, $\theta$ their heading angle and $u$ their linear velocity. Pedestrian's control input is $u_{ped} = [\omega, \alpha]^T$ (angular velocity and longitudinal acceleration). \\
+
+\noindent Thus, our system is described by a 14-D state space model. There are 5 state variables for each car and 4 for the pedestrian.
+
+\subsubsection{Cost Functions}
+
+Each player's cost is a weighted sum of penalties for:
+
+\begin{itemize}
+	\item \textit{Lane Center and Boundary:} Penalty for deviation from the center and exit of the lane
+	
+	\item \textit{Nominal Speed and Speed Bounds:} Enforcement of velocity $u_{ref, i}$ and respect of speed limits
+	
+	\item \textit{Proximity Cost:} Avoid close proximity of the players, because that can result to a collision.
+\end{itemize}
