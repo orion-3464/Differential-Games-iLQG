@@ -71,7 +71,6 @@ $$
 $$
 
 \noindent where $l_i(t) = \nabla_{\hat{x}}g_i, \; r_{ij} = \nabla_{\hat{u}_{j}}g_i$ and matrices $Q_i$ and $R_{ij}$ are Hessians $D_{\hat{x}\hat{x}}^2g_i$ and $D_{\hat{u}_j\hat{u}_j}^2g_i$. The mixed partials (Hessians) are omitted because they rarely appear in cost functions of practical interest. 
-$$
 
 \noindent The linearized dynamics and the quadratic approximation of the cost together constitute a Linear–Quadratic (LQ) game, analogous to the formulation described in the background section. Consequently, its solution can be obtained by solving a system of coupled Riccati differential equations, as presented in \cite{basar1999}. \\
 \noindent After each iteration, we update our proposed strategies:
@@ -80,4 +79,11 @@ $$
  \gamma_i^k(t, x(t)) = \hat{u}_i(t) - P_i^k(t)\delta x(t) - \eta \alpha_i^k(t) 
  $$
  
- \noindent where $P_i^k$ is the solution of the coupled Riccati differential equation at iteration $k$ (LQ games' Nash equilibrium feedback control was $u_i^{*} = R_{ii}^{-1}B_i^T P_ix$) and $\alpha_i^k$ is an affine term related to minimization of Hamiltonian $\left(\frac{\partial H_i}{\partial u_i}\right)$. Parameter $\eta$ is a step size that we choose performing line search. Its purpose is to improve the algorithm's convergence.
+ \noindent where $P_i^k$ is the solution of the coupled Riccati differential equation at iteration $k$ (LQ games' Nash equilibrium feedback control was $u_i^{*} = R_{ii}^{-1}B_i^T P_ix$) and $\alpha_i^k$ is an affine term related to minimization of Hamiltonian $\left(\frac{\partial H_i}{\partial u_i}\right)$. Parameter $\eta$ is a step size that we choose performing line search. Its purpose is to improve the algorithm's convergence. \\
+ 
+ \noindent The structure of the proposed algorithm is summarized in the flowchart below.
+ 
+ \begin{figure}[h!]
+ 	\centering
+ 	\includegraphics[width=0.7\textwidth]{images/ilqg_flowchart/ilqg.png}
+ \end{figure}
