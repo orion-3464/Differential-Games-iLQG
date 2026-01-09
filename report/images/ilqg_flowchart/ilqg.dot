@@ -1,0 +1,46 @@
+digraph IterativeLQGames {
+    rankdir=TB;
+    splines=ortho;
+    nodesep=0.6;
+    ranksep=0.8;
+
+    fontname="Times-Roman";
+    node [fontname="Times-Roman", fontsize=11, shape=rectangle];
+    edge [fontname="Times-Roman", fontsize=10];
+
+    Start [shape=oval, label="Start"];
+    End   [shape=oval, label="End"];
+
+    Input [shape=parallelogram,
+           label="Input\nx(0), {γᵢ⁰}, T, {gᵢ}"];
+
+    Loop [label="Iteration k = 1, 2, …"];
+
+    Traj [label="Compute trajectory\nξᵏ ← getTrajectory(x(0), {γᵢᵏ⁻¹})"];
+
+    Lin [label="Linearize dynamics\nA(t), Bᵢ(t)"];
+
+    Quad [label="Quadraticize costs\nlᵢ(t), Qᵢ(t), rᵢⱼ(t), Rᵢⱼ(t)"];
+
+    Solve [label="Solve LQ game\n{γ̂ᵢᵏ}"];
+
+    Step [label="Update strategies\n{γᵢᵏ} ← stepToward({γᵢᵏ⁻¹}, {γ̂ᵢᵏ})"];
+
+    Conv [shape=diamond, label="Converged?"];
+
+    Output [shape=parallelogram,
+            label="Output\n{γᵢᵏ}"];
+
+    Start -> Input -> Loop -> Traj -> Lin 
+    Traj -> Quad
+    Lin -> Solve
+    Quad -> Solve -> Step -> Conv;
+
+    Conv -> Loop [label="No"];
+
+    Conv -> Output [label="Yes"];
+    Output -> End;
+
+    { rank=same; Lin; Quad }
+}
+
