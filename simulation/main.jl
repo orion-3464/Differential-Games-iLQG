@@ -1,3 +1,0 @@
-using iLQGames
-using LinearAlgebra
-using StaticArrays
