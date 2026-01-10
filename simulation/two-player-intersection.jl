@@ -1,7 +1,3 @@
-using iLQGames
-import iLQGames: dx
-using StaticArrays
-using LinearAlgebra
 using Plots
 
 include("src/dynamics/intersection.jl")
@@ -27,7 +23,7 @@ x0 = SVector(
     # Car 1 (Compact)
     -2.5, 2.0, 0.0, 0.0, 0.0,
     # Car 2 (SUV)
-    0.0, -2.5, π/2, 0.0, 0.0
+    0.0, -1.5, π/2, 0.0, 0.0
 )
 
 converged, trajectory, strategies = solve(g, solver, x0)

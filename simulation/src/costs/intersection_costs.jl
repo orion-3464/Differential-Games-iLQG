@@ -4,7 +4,7 @@ dt = 0.1
 T = 5.0  
 
 # Cost functions' parameters
-d_prox = 1.0
+d_prox = 0.5
 t_goal = 2.0
 d_lane = 1.5
 
