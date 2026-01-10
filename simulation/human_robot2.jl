@@ -36,10 +36,10 @@ if converged
     println("Found Nash equilibrium. Plotting...")
 
     plt = plot_traj(trajectory, g, [:blue, :green, :red])
-    savefig(plt, "results/robot_human1.png")
+    savefig(plt, "results/robot_human2.png")
 
     @animated(plot_traj(trajectory, g, [:blue, :green, :red]),
-          1:game_horizon, "results/robot_human1_animation.gif")
+          1:game_horizon, "results/robot_human2_animation.gif")
 
 else
     println("Failed to converge. Aborting...")
