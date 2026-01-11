@@ -1,6 +1,6 @@
 \subsection{Three-player Intersection}
 
-In this section, we are going to reproduce the scenario of three-player intersection as described in \cite{fridovichkeil2020}
+In this section, we are going to reproduce paper's \cite{fridovichkeil2020} results using a similar scenario to the three player intersection.
 
 \subsubsection{Problem Description}
 
@@ -37,3 +37,62 @@ Each player's cost is a weighted sum of penalties for:
 	
 	\item \textit{Proximity Cost:} Avoid close proximity of the players, because that can result to a collision.
 \end{itemize}
+
+\subsubsection{Our Scenario and Results}
+
+In our simulation we defined a reduced system with two players. Those agents' dynamics adhere to bicycle kinematic model (they are cars). Thus, our system is 10-D. The two lanes are straight lines for implementation simplicity. The objective is crossing the intersection without collisions. \\
+
+\noindent Our simulation was implemented utilizing \cite{iLQGames}, a software library in Julia developed to solve games described by paper \cite{fridovichkeil2020}. \\
+\noindent There, one can defined the system's dynamics as presented in the code snippet from file \textit{intersection.jl} below:
+
+\begin{minted}{julia}
+using iLQGames
+import iLQGames: dx, xyindex
+
+nx, nu, dt, game_horizon = 10, 4, 0.1, 500
+L1, L2 = 2.5, 2.9 # wheelbases
+
+struct Intersection <: ControlSystem{dt, nx, nu} end
+
+dx(cs::Intersection, x, u, t) = SVector(
+    # Car1 (Compact) dynamics - Bicycle kinematic model
+    # [px, py, θ, v, φ]
+    x[4]cos(x[3]),
+    x[4]sin(x[3]),
+    x[4]*tan(x[5])/L1,
+    u[2],
+    u[1],
+    # Car2 (SUV) dynamics - Bicycle kinematic model
+    # [px, py, θ, v, φ]
+    x[9]cos(x[8]),
+    x[9]sin(x[8]),
+    x[9]*tan(x[10])/L2,
+    u[4],
+    u[3]
+)
+
+# Specify players' positions
+xyindex(::Intersection) = ((1,2), (6,7))
+\end{minted}
+
+\noindent The cost functions that we implemented the ones presented in \cite{fridovichkeil2020}. Our simulation parameters are:
+
+\begin{itemize}
+	\item $d_{prox} = 0.5$
+	
+	\item $t_{goal} = 2.0$
+	
+	\item $d_{lane} = 1.5$
+\end{itemize}
+
+\noindent Our cars have different size specified through their wheelbase, 2.5 and 2.9 meters respectively. \\
+
+\noindent Here is their resulting trajectory: \\
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\textwidth]{../simulation/results/intersection.png}
+	\caption{Two player intersection}
+\end{figure}
+
+\noindent The corresponding gif file illustrates that there is no collision between our agents. Our algorithm indeed converges to a Nash equilibrium solving this simple game.
